@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "kintvisuals",
+  "version": "1.0.0",
+  "name": "KintVisuals",
+  "description": "Legit visual",
+  "authors": ["Kins"],
+  "icon": "assets/kintvisuals/icons/icon.png",
+  "contact": {
+    "sources": ""
+  },
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.kintvisuals.KintVisuals"
+    ],
+    "client": [
+      "com.kintvisuals.client.KintVisualsClient"
+    ]
+  },
+  "mixins": [
+    "kintvisuals.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.19",
+    "minecraft": "1.20.1",
+    "fabric": "*"
+  }
+}

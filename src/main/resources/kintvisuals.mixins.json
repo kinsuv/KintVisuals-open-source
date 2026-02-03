@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.kintvisuals.client.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "MixinHeldItemRenderer",
+    "NoHurtCamMixin",
+    "RainbowFogMixin",
+    "MixinClientWorld",
+    "MixinGameRenderer",
+    "MixinMinecraftClient",
+    "MixinWorldRendererTrail",
+    "MixinChatScreen"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

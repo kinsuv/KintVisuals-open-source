@@ -1,0 +1,94 @@
+plugins {
+    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'maven-publish'
+}
+
+version = '1.0.0'
+group = 'com.kintvisuals'
+
+base {
+    archivesName = 'kintvisuals'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.fabricmc.net/' }
+    maven { url 'https://maven.terraformersmc.com/releases/' }
+    maven { url 'https://maven.shedaniel.me/' }
+}
+
+loom {
+    // ТЕПЕРЬ РЕФМАП БУДЕТ ГЕНЕРИРОВАТЬСЯ ПРАВИЛЬНО
+    mixin {
+        defaultRefmapName = "kintvisuals-refmap.json"
+    }
+
+    splitEnvironmentSourceSets()
+
+    runs {
+        client {
+            client()
+            configName = "Minecraft Client"
+            ideConfigGenerated = true
+            runDir = "run"
+        }
+    }
+}
+
+dependencies {
+    // Minecraft + Fabric
+    minecraft "com.mojang:minecraft:1.20.1"
+    mappings "net.fabricmc:yarn:1.20.1+build.9:v2"
+
+    // Обновил лоадер для стабильности
+    modImplementation "net.fabricmc:fabric-loader:0.15.11"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.92.6+1.20.1"
+
+    // Cloth Config
+    modImplementation "me.shedaniel.cloth:cloth-config-fabric:11.1.136"
+    include "me.shedaniel.cloth:cloth-config-fabric:11.1.136"
+
+    // ModMenu
+    modImplementation "com.terraformersmc:modmenu:7.2.2"
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+
+    // Решает проблему с дубликатами
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+    withSourcesJar()
+}
+
+sourceSets {
+    client {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
+}
+
+// Удалил проблемный rename из jar, чтобы не было ошибок сборки
+jar {
+    from("LICENSE")
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
